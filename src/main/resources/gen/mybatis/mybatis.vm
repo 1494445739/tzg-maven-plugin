@@ -1,0 +1,39 @@
+#set( $beanQualifiedName = "com.tzg.web.project.bean." )
+#set( $beanQualifiedName = $beanQualifiedName.replaceAll( "project", $project ) + $module )
+#set( $mapperQualifiedName = "com.tzg.web.project.mapper." )
+#set( $mapperQualifiedName = $mapperQualifiedName.replaceAll( "project", $project ) + $module + "Mapper" )
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="$mapperQualifiedName">
+
+#genResultMap( $columnMetadataList, $stringHelper, $beanQualifiedName )
+
+#genSQL( $columnMetadataList, $stringHelper, $beanQualifiedName )
+
+#set( $cols = "" )
+#foreach( $columnMetadata in $columnMetadataList )
+    #set( $cols = $cols + $columnMetadata.columnName.toUpperCase() + ", " )
+    #set( $colsLen = $cols.length() - 2 )
+#end
+    <sql id="columns">
+        $cols.substring( 0, $colsLen )
+    </sql>
+
+#genUpdate( $columnMetadataList, $stringHelper, $beanQualifiedName, $table )
+
+#genInsert( $columnMetadataList, $stringHelper, $beanQualifiedName, $table )
+
+#genSelectById( $columnMetadataList, $stringHelper, $beanQualifiedName, $table)
+
+#genSelectList( $columnMetadataList, $stringHelper, $beanQualifiedName, $table)
+
+    <select id="selectCount" parameterType="Map" resultType="Integer">
+        SELECT count(*) FROM $table
+        <include refid="where"/>
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM $table WHERE id = #{id}
+    </delete>
+
+</mapper>

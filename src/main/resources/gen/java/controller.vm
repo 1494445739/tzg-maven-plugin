@@ -1,0 +1,36 @@
+#set( $ctrlQualifiedPkg  = "com.tzg.web.project.controller" )
+#set( $modelQualifiedPkg  = "com.tzg.web.project.bean." )
+#set( $servQualifiedPkg  = "com.tzg.web.project.service.api." )
+#set( $pkg               = $ctrlQualifiedPkg.replaceAll( "project", $project ) )
+#set( $modelQualifiedName = $modelQualifiedPkg.replaceAll( "project", $project ) + $module )
+#set( $servQualifiedname = $servQualifiedPkg.replaceAll( "project", $project ) + $module.concat( "Service") )
+#set( $router            = "/$project/" + $module.substring(0, 1).toLowerCase() + $module.substring(1) )
+#set( $ClassName         = $module + "Controller" )
+#set( $ServClassName     = $module + "Service" )
+#set( $servVal           = $module.substring(0, 1).toLowerCase() + $module.substring(1) + "Service" )
+package $pkg;
+
+import com.tzg.service.support.proto.ProtoController;
+import com.tzg.service.support.proto.ProtoService;
+
+import $modelQualifiedName;
+import $servQualifiedname;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+
+@Controller
+@RequestMapping( "$router" )
+public class $ClassName extends ProtoController< $module > {
+
+	@Resource
+	private $ServClassName $servVal;
+
+	@Override
+	protected ProtoService< $module > getService() {
+		return $servVal;
+	}
+
+}

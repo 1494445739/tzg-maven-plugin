@@ -1,0 +1,22 @@
+#set( $pkg       = "com.tzg.web.project.bean" )
+#set( $pkg       = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+#set( $ClassName = $module )
+package $pkg;
+
+import com.tzg.service.support.proto.ProtoBean;
+
+import java.io.Serializable;
+
+public class $ClassName extends ProtoBean implements Serializable {
+
+    private static final long serialVersionUID = 1;
+
+##生成属性
+#genModelProp( $columnMetadataList, $stringHelper )
+
+## 生成方法
+#genModelMethod( $columnMetadataList, $stringHelper )
+## toString方法
+#genModelToString( $columnMetadataList, $ClassName, $stringHelper )
+
+}

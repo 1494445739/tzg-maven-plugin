@@ -1,0 +1,11 @@
+#set( $pkg               = "com.tzg.web.project.service.api" )
+#set( $pkg               = $pkg.replaceAll( "project", $project ) )
+#set( $modelQualifiedName = "com.tzg.web.project.bean." )
+#set( $modelQualifiedName = $modelQualifiedName.replaceAll( "project", $project) + $module )
+#set( $ClassName         = $module + "Service" )
+package $pkg;
+
+import com.tzg.service.support.proto.ProtoService;
+import $modelQualifiedName;
+
+public interface $ClassName extends ProtoService< $module> { }
