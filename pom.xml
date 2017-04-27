@@ -12,7 +12,7 @@
     <parent>
         <groupId>com.tzg</groupId>
         <artifactId>framework-core</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <!-- ====================================================== -->
@@ -44,40 +44,13 @@
     </developers>
 
     <!-- ====================================================== -->
-    <!--                         属性定义                        -->
-    <!-- ====================================================== -->
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <!-- ====================================================== -->
     <!--                   组件依赖（第三方依赖）                  -->
     <!-- ====================================================== -->
     <dependencies>
         <dependency>
             <groupId>com.tzg</groupId>
             <artifactId>tool-support</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <!-- ====================================================== -->
-    <!-- 发布管理                                                -->
-    <!--                                                        -->
-    <!--     1. dev-release  正式版本                            -->
-    <!--     2. dev-snapshot 快照版本                            -->
-    <!-- ====================================================== -->
-    <distributionManagement>
-        <repository>
-            <id>dev-release</id>
-            <name>dev-nexus-release</name>
-            <url>http://dev.maven.com:8081/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>dev-nexus-snapshots</id>
-            <name>dev-nexus-snapshot</name>
-            <url>http://dev.maven.com:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>
