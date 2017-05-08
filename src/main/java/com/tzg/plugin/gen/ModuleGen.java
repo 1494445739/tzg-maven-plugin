@@ -21,7 +21,7 @@ import java.util.Properties;
 /**
  * @goal gen
  */
-public class Gen extends AbstractMojo {
+public class ModuleGen extends AbstractMojo {
 
     private final static String PROMPT = "Enter project module name. First character must be capitalized";
 

@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * @goal rm
  */
-public class Remove extends AbstractMojo {
+public class ModuleRemove extends AbstractMojo {
 
     private final static String PROMPT = "Enter project module which you want to remove. First character must be capitalized";
 

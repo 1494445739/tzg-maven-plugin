@@ -24,6 +24,9 @@ public final class PluginHelper {
 
     private final static Logger logger = LoggerFactory.getLogger( PluginHelper.class );
 
+    public static String getRootPath() {
+        return ROOT_PATH;
+    }
 
     /**
      * 根据user.dir返回当前目录的项目名缩写。比如：webapp-auth将返回auth。规则是以`-`为界。
@@ -49,7 +52,7 @@ public final class PluginHelper {
      */
     public static String[] getFiles( String module ) {
 
-        String modelFileName      = module + ".java";
+        String modelFileName     = module + ".java";
         String ctrlFileName      = module + "Controller.java";
         String mapperFileName    = module + "Mapper.java";
         String servApiFileName   = module + "Service.java";
