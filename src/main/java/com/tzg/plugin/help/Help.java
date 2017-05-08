@@ -25,6 +25,10 @@ public class Help extends AbstractMojo {
         getLog().info( "tzg:rm" );
         getLog().info( "==> Input module name and remove module files." );
 
+        getLog().info( "" );
+        getLog().info( "tzg:component-gen" );
+        getLog().info( "==> Input component name. System will append component dependency or properties in pom.xml and evn_${profile}.properties" );
+
     }
 
 }
