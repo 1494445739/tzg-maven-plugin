@@ -1,6 +1,6 @@
-package com.tzg.plugin.support.directive;
+package com.tzg.plugin.module.directive;
 
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.support.ModuleSupport;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -36,7 +36,7 @@ public class MapperResultDirective extends Directive {
         fragment.append( "        <result column=\"$column\" property=\"$property\" />" ).append( "\n" );
         fragment.append( "    #end" );
 
-        Map< String, Object > map = PluginHelper.getMapperFragment( node, context, fragment.toString() );
+        Map< String, Object > map = ModuleSupport.getMapperFragment( node, context, fragment.toString() );
 
         String content = ( String ) map.get( "content" );
 
@@ -48,7 +48,7 @@ public class MapperResultDirective extends Directive {
 
         map.put( "content", sb.toString() );
 
-        writer.write( PluginHelper.renderTemplate( map ) );
+        writer.write( ModuleSupport.renderTemplate( map ) );
 
         return true;
 

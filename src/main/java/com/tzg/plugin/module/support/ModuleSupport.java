@@ -1,6 +1,6 @@
-package com.tzg.plugin.support.helper;
+package com.tzg.plugin.module.support;
 
-import com.tzg.plugin.support.model.ColumnMetadata;
+import com.tzg.plugin.module.model.ColumnMetadata;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -16,17 +16,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public final class PluginHelper {
+public final class ModuleSupport {
 
     private final static String ROOT_PATH = System.getProperty( "user.dir" );
 
-    private final static Logger logger = LoggerFactory.getLogger( PluginHelper.class );
-
-    public static String getRootPath() {
-        return ROOT_PATH;
-    }
+    private final static Logger logger = LoggerFactory.getLogger( ModuleSupport.class );
 
     /**
      * 根据user.dir返回当前目录的项目名缩写。比如：webapp-auth将返回auth。规则是以`-`为界。

@@ -1,4 +1,4 @@
-package com.tzg.plugin.support.model;
+package com.tzg.plugin.module.model;
 
 import java.util.List;
 

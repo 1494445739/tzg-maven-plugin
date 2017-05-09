@@ -26,8 +26,13 @@ public class Help extends AbstractMojo {
         getLog().info( "==> Input module name and remove module files." );
 
         getLog().info( "" );
-        getLog().info( "tzg:component-gen" );
-        getLog().info( "==> Input component name. System will append component dependency or properties in pom.xml and evn_${profile}.properties" );
+        getLog().info( "tzg:dependency-gen" );
+        getLog().info( "==> Input dependency's artifactId. System will append component dependency or properties in pom.xml and evn_${profile}.properties" );
+
+        getLog().info( "" );
+        getLog().info( "tzg:dependency-rm" );
+        getLog().info( "==> Input dependency's artifactId. System will delete component dependency or properties in pom.xml and evn_${profile}.properties" );
+
 
     }
 

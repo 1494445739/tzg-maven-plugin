@@ -1,8 +1,8 @@
-package com.tzg.plugin.gen;
+package com.tzg.plugin.module.goal;
 
-import com.tzg.plugin.support.model.ColumnMetadata;
-import com.tzg.plugin.support.model.Parameter;
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.model.ColumnMetadata;
+import com.tzg.plugin.module.model.Parameter;
+import com.tzg.plugin.module.support.ModuleSupport;
 import com.tzg.tool.support.datatype.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,16 +51,16 @@ public class ModuleGen extends AbstractMojo {
             if ( StringUtils.isBlank( table ) ) table = module;
 
             // 获取项目名
-            String project = PluginHelper.getCurrentProjectName();
+            String project = ModuleSupport.getCurrentProjectName();
             getLog().info( "====>Project: " + project );
 
             // 获取数据库指定表结构
-            List< ColumnMetadata > columnMetadataList = PluginHelper.getTableMetadata( table );
+            List< ColumnMetadata > columnMetadataList = ModuleSupport.getTableMetadata( table );
             getLog().info( "====>Table structure: " + columnMetadataList );
 
             // 生成模块文件集合
-            String[]  templates = PluginHelper.getTemplates();
-            String[]  files     = PluginHelper.getFiles( module );
+            String[]  templates = ModuleSupport.getTemplates();
+            String[]  files     = ModuleSupport.getFiles( module );
             Parameter param     = new Parameter( project, module, table, columnMetadataList );
 
             for ( int i = 0; i < files.length; i++ ) {
@@ -90,11 +90,11 @@ public class ModuleGen extends AbstractMojo {
         Properties properties = new Properties();
         properties.setProperty( "resource.loader", "class" );
         properties.setProperty( "class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
-        properties.setProperty( "userdirective", "com.tzg.plugin.support.directive.ModelPropDirective, com.tzg.plugin.support.directive.ModelMethodDirective, "
-                + "com.tzg.plugin.support.directive.ModelToStringDirective, com.tzg.plugin.support.directive.MapperResultDirective, "
-                + "com.tzg.plugin.support.directive.MapperSQLDirective, com.tzg.plugin.support.directive.MapperUpdateDirective, "
-                + "com.tzg.plugin.support.directive.MapperSelectByIdDirective, com.tzg.plugin.support.directive.MapperInsertDirective, "
-                + "com.tzg.plugin.support.directive.MapperSelectListDirective" );
+        properties.setProperty( "userdirective", "com.tzg.plugin.module.directive.ModelPropDirective, com.tzg.plugin.module.directive.ModelMethodDirective, "
+                + "com.tzg.plugin.module.directive.ModelToStringDirective, com.tzg.plugin.module.directive.MapperResultDirective, "
+                + "com.tzg.plugin.module.directive.MapperSQLDirective, com.tzg.plugin.module.directive.MapperUpdateDirective, "
+                + "com.tzg.plugin.module.directive.MapperSelectByIdDirective, com.tzg.plugin.module.directive.MapperInsertDirective, "
+                + "com.tzg.plugin.module.directive.MapperSelectListDirective" );
 
         VelocityEngine  engine  = new VelocityEngine( properties );
         VelocityContext context = new VelocityContext();

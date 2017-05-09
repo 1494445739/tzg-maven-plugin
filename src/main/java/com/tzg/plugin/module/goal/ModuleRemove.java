@@ -1,13 +1,12 @@
-package com.tzg.plugin.rm;
+package com.tzg.plugin.module.goal;
 
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.support.ModuleSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.components.interactivity.Prompter;
-import org.codehaus.plexus.components.interactivity.PrompterException;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class ModuleRemove extends AbstractMojo {
                 module = prompter.prompt( PROMPT );
             }
 
-            removeFiles( PluginHelper.getFiles( module ) );
+            removeFiles( ModuleSupport.getFiles( module ) );
 
         } catch ( Exception e ) {
             e.printStackTrace();
