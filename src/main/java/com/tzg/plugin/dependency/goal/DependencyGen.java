@@ -1,6 +1,7 @@
 package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
+import com.tzg.plugin.dependency.support.MongoDBSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -57,6 +58,12 @@ public class DependencyGen extends AbstractMojo {
             }
 
             DependencySupport.pomWriter( pomPath, document );
+
+            switch ( component ) {
+                case "component-mongodb":
+                    MongoDBSupport.execute();
+                    break;
+            }
 
         } catch ( DocumentException e ) {
             e.printStackTrace();
