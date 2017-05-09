@@ -1,6 +1,6 @@
-package com.tzg.plugin.support.directive;
+package com.tzg.plugin.module.directive;
 
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.support.ModuleSupport;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -34,7 +34,7 @@ public class MapperSQLDirective extends Directive {
         fragment.append( "#set( $column   = $columnMetadata.columnName.toUpperCase() )" ).append( "\t\t\t" );
         fragment.append( "<if test=\"$property != null and $property != ''\">and $column = #{$property}</if>" ).append( "\n" );
 
-        Map< String, Object > map = PluginHelper.getMapperFragment( node, context, fragment.toString() );
+        Map< String, Object > map = ModuleSupport.getMapperFragment( node, context, fragment.toString() );
 
         String content = ( String ) map.get( "content" );
 
@@ -47,7 +47,7 @@ public class MapperSQLDirective extends Directive {
 
         map.put( "content", sb.toString() );
 
-        writer.write( PluginHelper.renderTemplate( map ) );
+        writer.write( ModuleSupport.renderTemplate( map ) );
 
         return true;
 

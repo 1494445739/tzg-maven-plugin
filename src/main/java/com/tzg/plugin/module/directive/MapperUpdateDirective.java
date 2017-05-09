@@ -1,6 +1,6 @@
-package com.tzg.plugin.support.directive;
+package com.tzg.plugin.module.directive;
 
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.support.ModuleSupport;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -40,7 +40,7 @@ public class MapperUpdateDirective extends Directive {
         SimpleNode tableNode = ( SimpleNode ) node.jjtGetChild( 3 );
         String     table     = ( String ) tableNode.value( context );
 
-        Map< String, Object > map = PluginHelper.getMapperFragment( node, context, fragment.toString() );
+        Map< String, Object > map = ModuleSupport.getMapperFragment( node, context, fragment.toString() );
         map.put( "table", table );
 
         String content = ( String ) map.get( "content" );
@@ -56,7 +56,7 @@ public class MapperUpdateDirective extends Directive {
 
         map.put( "content", sb.toString() );
 
-        writer.write( PluginHelper.renderTemplate( map ) );
+        writer.write( ModuleSupport.renderTemplate( map ) );
 
         return true;
 

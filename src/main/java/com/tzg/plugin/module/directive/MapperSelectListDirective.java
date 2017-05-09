@@ -1,6 +1,6 @@
-package com.tzg.plugin.support.directive;
+package com.tzg.plugin.module.directive;
 
-import com.tzg.plugin.support.helper.PluginHelper;
+import com.tzg.plugin.module.support.ModuleSupport;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-public class MapperSelectByIdDirective extends Directive {
+public class MapperSelectListDirective extends Directive {
 
     @Override
     public String getName() {
-        return "genSelectById";
+        return "genSelectList";
     }
 
     @Override
@@ -34,22 +34,28 @@ public class MapperSelectByIdDirective extends Directive {
         SimpleNode tableNode = ( SimpleNode ) node.jjtGetChild( 3 );
         String     table     = ( String ) tableNode.value( context );
 
-        Map< String, Object > map = PluginHelper.getMapperFragment( node, context, fragment.toString() );
+        Map< String, Object > map = ModuleSupport.getMapperFragment( node, context, fragment.toString() );
         map.put( "table", table );
 
         StringBuilder sb = new StringBuilder();
         sb.append( "#set( $cols = \"\" )" );
         sb.append( "\t" );
-        sb.append( "<select id=\"selectById\" parameterType=\"Integer\" resultMap=\"result\">" ).append( "\n\t" );
-        sb.append( "    SELECT <include refid=\"columns\"/> FROM $table WHERE id = #{id}" ).append( "\n\t" );
+        sb.append( "<select id=\"selectList\" parameterType=\"Map\" resultMap=\"result\">" ).append( "\n\t" );
+        sb.append( "    SELECT <include refid=\"columns\"/> FROM $table" ).append( "\n\t" );
+        sb.append( "    <include refid=\"where\"/>" ).append( "\n\t" );
+        sb.append( "    ORDER BY id DESC" ).append( "\n\n\t" );
+
+        sb.append( "    <if test=\"size != null or skip != null\">" ).append( "\n\t" );
+        sb.append( "        LIMIT #{skip}, #{size}" ).append( "\n\t" );
+        sb.append( "    </if>" ).append( "\n\t" );
+
         sb.append( "</select>" ).append( "\n" );
 
         map.put( "content", sb.toString() );
 
-        writer.write( PluginHelper.renderTemplate( map ) );
+        writer.write( ModuleSupport.renderTemplate( map ) );
 
         return true;
-
     }
 
 }
