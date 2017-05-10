@@ -1,6 +1,7 @@
 package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
+import com.tzg.plugin.dependency.support.MongoDBSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -13,13 +14,14 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @goal dep-rm
  */
 public class DependencyRemove extends AbstractMojo {
 
-    private final static String PROMPT = "Enter dependency's artifactId which you want to remove.";
+    private static int MONGODB_COMMENT_LENGTH = 6;
 
     /**
      * @component
@@ -30,13 +32,23 @@ public class DependencyRemove extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        String component = System.getProperty( "component" );
+        String prompt = DependencySupport.getPrompt( "REMOVE" );
 
         try {
 
-            // 组件名不能为null，否则一直循环要求输入，直至进程被终止
-            while ( StringUtils.isBlank( component ) ) {
-                component = prompter.prompt( PROMPT );
+            String component = null;
+            String index     = DependencySupport.getIndex( prompter, prompt );
+            switch ( index ) {
+                case "1":
+                    component = "component-browser-starter";
+                    break;
+                case "2":
+                    component = "component-mongodb";
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MONGODB_COMMENT_LENGTH );
+                    break;
+                case "3":
+                    component = "web-auth";
+                    break;
             }
 
             // 读取xml，根据输入的component进行查找，如果找到，则删除相关的组件，并写入pom.xml文件
@@ -45,14 +57,21 @@ public class DependencyRemove extends AbstractMojo {
             SAXReader reader   = new SAXReader();
             Document  document = reader.read( pomPath );
 
-            Element dependencies = DependencySupport.getDependenciesElement( document );
-            Element dependency   = DependencySupport.getDependencyElement( component, dependencies );
+            Element         dependencies   = DependencySupport.getDependenciesElement( document );
+            List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
 
-            if ( dependency != null ) {
-                dependencies.remove( dependency );
+            if ( dependencyList.size() != 0 ) {
+
+                for ( Element dependency : dependencyList ) {
+                    dependencies.remove( dependency );
+                }
+
+                DependencySupport.pomWriter( pomPath, document );
+                System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
+
+            } else {
+                System.out.println( "====> Dependency component doesn't exist in pom.xml".replaceAll( "component", component ) );
             }
-
-            DependencySupport.pomWriter( pomPath, document );
 
         } catch ( DocumentException e ) {
             e.printStackTrace();
