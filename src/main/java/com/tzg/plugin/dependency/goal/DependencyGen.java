@@ -2,7 +2,6 @@ package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -14,13 +13,12 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @goal dep-gen
  */
 public class DependencyGen extends AbstractMojo {
-
-    private final static String PROMPT = "Enter component's name. such as( component-browser-starter ) ";
 
     /**
      * @component
@@ -32,13 +30,23 @@ public class DependencyGen extends AbstractMojo {
     @SuppressWarnings( "unchecked" )
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-        String component = System.getProperty( "component" );
+        String prompt = DependencySupport.getPrompt( "GENERATE" );
 
         try {
 
-            // 组件名不能为null，否则一直循环要求输入，直至进程被终止
-            while ( StringUtils.isBlank( component ) ) {
-                component = prompter.prompt( PROMPT );
+            String component = null;
+            String index     = DependencySupport.getIndex( prompter, prompt );
+            switch ( index ) {
+                case "1":
+                    component = "component-browser-starter";
+                    break;
+                case "2":
+                    component = "component-mongodb";
+                    DependencySupport.appendProperties( MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration(), component );
+                    break;
+                case "3":
+                    component = "web-auth";
+                    break;
             }
 
             // 读取xml，根据输入的component进行查找，如果查找不到，则生成相关的组件，并写入pom.xml文件
@@ -47,29 +55,34 @@ public class DependencyGen extends AbstractMojo {
             SAXReader reader   = new SAXReader();
             Document  document = reader.read( pomPath );
 
-            Element dependencies = DependencySupport.getDependenciesElement( document );
-            Element dependency   = DependencySupport.getDependencyElement( component, dependencies );
+            Element         dependencies   = DependencySupport.getDependenciesElement( document );
+            List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
 
-            if ( dependency == null ) {
+            if ( dependencyList.size() == 0 ) {
                 // create <dependency> node
                 Element dependencyElement = dependencies.addElement( "dependency" );
                 dependencyElement.addElement( "groupId" ).addText( "com.tzg" );
                 dependencyElement.addElement( "artifactId" ).addText( component );
+
+                if ( component.contains( "web-" ) ) {
+                    dependencyElement.addElement( "type" ).addText( "war" );
+
+                    Element warClassifierDependency = dependencies.addElement( "dependency" );
+                    warClassifierDependency.addElement( "groupId" ).addText( "com.tzg" );
+                    warClassifierDependency.addElement( "artifactId" ).addText( component );
+                    warClassifierDependency.addElement( "classifier" ).addText( "classes" );
+                }
             }
 
             DependencySupport.pomWriter( pomPath, document );
-
-            switch ( component ) {
-                case "component-mongodb":
-                    MongoDBSupport.execute();
-                    break;
-            }
 
         } catch ( DocumentException e ) {
             e.printStackTrace();
         } catch ( PrompterException e ) {
             e.printStackTrace();
         } catch ( IOException e ) {
+            e.printStackTrace();
+        } catch ( Exception e ) {
             e.printStackTrace();
         }
 
