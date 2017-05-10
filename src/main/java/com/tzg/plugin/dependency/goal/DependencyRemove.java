@@ -21,8 +21,6 @@ import java.util.List;
  */
 public class DependencyRemove extends AbstractMojo {
 
-    private static int MONGODB_COMMENT_LENGTH = 6;
-
     /**
      * @component
      * @required
@@ -44,7 +42,7 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MONGODB_COMMENT_LENGTH );
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
                     break;
                 case "3":
                     component = "web-auth";
