@@ -1,0 +1,9 @@
+#set( $pkg                 = "com.tzg.web.project.mongodb" )
+#set( $pkg                 = $pkg.replaceAll( "project", $project ) )
+package $pkg;
+
+import com.tzg.component.mongodb.proto.MongoDBProtoServiceImpl;
+import org.springframework.stereotype.Repository;
+
+@Repository( "mongodbFooServiceImpl" )
+public class FooServiceImpl extends MongoDBProtoServiceImpl< Foo > implements FooService< Foo > {}

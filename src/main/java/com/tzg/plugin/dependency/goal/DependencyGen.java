@@ -43,6 +43,7 @@ public class DependencyGen extends AbstractMojo {
                 case "2":
                     component = "component-mongodb";
                     DependencySupport.appendProperties( MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration(), component );
+                    MongoDBSupport.genMongoDBModule();
                     break;
                 case "3":
                     component = "web-auth";
