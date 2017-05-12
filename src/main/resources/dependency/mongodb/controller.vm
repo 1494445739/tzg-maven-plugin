@@ -2,6 +2,7 @@
 #set( $pkg = $pkg.replaceAll( "project", $project.toLowerCase() ) )
 package $pkg;
 
+import com.tzg.component.mongodb.MongoDBService;
 import com.tzg.service.support.json.JsonResp;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
