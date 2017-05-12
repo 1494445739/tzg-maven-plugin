@@ -13,6 +13,7 @@ import java.util.Properties;
 public final class MongoDBSupport {
 
     public static int MONGODB_COMMENT_LENGTH = 12;
+    public static int MONGODB_KEY_INTERVAL   = 53;
 
     public static Map< String, String > getMongoDBMap() {
 

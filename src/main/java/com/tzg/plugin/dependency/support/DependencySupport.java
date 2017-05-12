@@ -217,10 +217,10 @@ public final class DependencySupport {
 
             }
 
-            content.append( commentsChinaToUnicode( MongoDBSupport.getMongoDBDeclaration() ) );
+            content.append( comment2Unicode( MongoDBSupport.getMongoDBDeclaration() ) );
 
             for ( String key : map.keySet() ) {
-                content.append( key + getSpace( 53, key.length() ) + "= " + map.get( key ) + "\n" );
+                content.append( format( key, key.length() ) + "= " + map.get( key ) + "\n" );
             }
 
             FileWriter     fw = new FileWriter( file, false );
@@ -230,32 +230,39 @@ public final class DependencySupport {
             fw.close();
 
         }
+
         return true;
     }
 
-    public static StringBuffer commentsChinaToUnicode( String bf ) {
+    public static String comment2Unicode( String comment ) {
 
-        StringBuffer retBf = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-        char[] chars = bf.toCharArray();
+        char[] chars = comment.toCharArray();
 
         for ( char charStr : chars ) {
-            //中文字符
+            // 处理中文字符
             if ( Character.getType( charStr ) == Character.OTHER_LETTER ) {
-                retBf.append( "\\u" + Integer.toHexString( charStr ) );
+                sb.append( "\\u" + Integer.toHexString( charStr ) );
             } else {
-                retBf.append( charStr );
+                sb.append( charStr );
             }
         }
-        return retBf;
+
+        return sb.toString();
+
     }
 
-    private static String getSpace( int spaceLength, int keyLength ) {
-        String space = "";
-        for ( int i = keyLength; i < spaceLength; i++ ) {
-            space = space + " ";
+    private static String format( String key, int keyLen ) {
+
+        String blank = "";
+
+        for ( int i = keyLen; i < MongoDBSupport.MONGODB_KEY_INTERVAL; i++ ) {
+            blank = blank + " ";
         }
-        return space;
+
+        return key + blank;
+
     }
 
 }

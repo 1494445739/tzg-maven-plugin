@@ -2,7 +2,7 @@
 #set( $pkg                 = $pkg.replaceAll( "project", $project ) )
 package $pkg;
 
-import com.tzg.component.mongodb.proto.MongoDBProtoServiceImpl;
+import com.tzg.component.mongodb.MongoDBProtoServiceImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository( "mongodbFooServiceImpl" )
