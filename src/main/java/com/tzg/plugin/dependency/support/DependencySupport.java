@@ -1,6 +1,10 @@
 package com.tzg.plugin.dependency.support;
 
+import com.tzg.plugin.module.support.ModuleSupport;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 import org.dom4j.Document;
@@ -91,7 +95,8 @@ public final class DependencySupport {
         sb.append( "Dependency registered: \n" );
         sb.append( "1) component-browser-starter \n" );
         sb.append( "2) component-mongodb \n" );
-        sb.append( "3) web-auth\n" );
+        sb.append( "3) component-redis \n" );
+        sb.append( "4) web-auth\n" );
         sb.append( "Please enter the number you want to keyword. Default is No.1)" );
 
         return sb.toString().replaceAll( "keyword", keyword );
@@ -104,7 +109,7 @@ public final class DependencySupport {
         String index = StringUtils.isBlank( input ) ? "1" : input;
 
         int i = 1; // 控制打印的索引
-        while ( !DependencySupport.isNumeric( index ) || ( Integer.valueOf( index ) < 0 || Integer.valueOf( index ) > 3 ) ) {
+        while ( !DependencySupport.isNumeric( index ) || ( Integer.valueOf( index ) < 0 || Integer.valueOf( index ) > 4 ) ) {
 
             if ( i++ != 1 ) {
                 errMsg.append( "\n" ); // 第一次输入的时候不打印空行，反之则打印空行
@@ -192,7 +197,7 @@ public final class DependencySupport {
     }
 
     @SuppressWarnings( "resource" )
-    public static boolean appendProperties( String filePath, String keyword, Map< String, String > map )
+    public static boolean appendProperties( String filePath, String keyword, Map< String, String > map, String declaration )
             throws IOException {
 
         File file = new File( filePath );
@@ -217,7 +222,7 @@ public final class DependencySupport {
 
             }
 
-            content.append( comment2Unicode( MongoDBSupport.getMongoDBDeclaration() ) );
+            content.append( comment2Unicode( declaration ) );
 
             for ( String key : map.keySet() ) {
                 content.append( format( key, key.length() ) + "= " + map.get( key ) + "\n" );
@@ -263,6 +268,35 @@ public final class DependencySupport {
 
         return key + blank;
 
+    }
+
+    public static void mergeTemplate( String filePath, String tplPath ) throws IOException {
+
+        File file = new File( filePath );
+        FileUtils.touch( file );
+
+        Properties properties = new Properties();
+        properties.setProperty( "resource.loader", "class" );
+        properties.setProperty( "class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+
+        VelocityEngine  engine  = new VelocityEngine( properties );
+        VelocityContext context = new VelocityContext();
+        context.put( "project", ModuleSupport.getCurrentProjectName() );
+
+        Writer writer = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" ) );
+        engine.mergeTemplate( tplPath, "UTF-8", context, writer );
+
+        writer.flush();
+        writer.close();
+
+    }
+
+    public static void removeModule( String modulePath, String module ) throws IOException {
+        File file = new File( modulePath );
+        if ( file.exists() ) {
+            FileUtils.forceDelete( file );
+        }
+        System.out.println( "====> delete module '$path' successfully.".replace( "$path", file.getAbsolutePath() ).replace( "module", module ) );
     }
 
 }
