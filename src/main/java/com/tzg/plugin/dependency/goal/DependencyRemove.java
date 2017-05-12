@@ -50,6 +50,7 @@ public class DependencyRemove extends AbstractMojo {
                     component = "component-redis";
                     DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
+                    break;
                 case "4":
                     component = "web-auth";
                     break;
