@@ -43,6 +43,7 @@ public class DependencyRemove extends AbstractMojo {
                 case "2":
                     component = "component-mongodb";
                     DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
+                    MongoDBSupport.removeMongoDBModule();
                     break;
                 case "3":
                     component = "web-auth";

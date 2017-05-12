@@ -125,109 +125,137 @@ public final class DependencySupport {
     }
 
     /**
-     * @param pomPath    文件地址
-     * @param key        模糊匹配key的值
-     * @param commentLen 删除注释的长度。例如mongdb。位置为从下往上
+     * @param pomPath 文件地址
+     * @param key     组件的key值，比如component-mongodb的key就是mongoDB
+     * @param rowSpan 删除注释的长度。例如mongdb。位置为从下往上
      * @return
      * @throws IOException
      */
     @SuppressWarnings( "resource" )
-    public static boolean clearProperties( String pomPath, String key, int commentLen )
+    public static boolean clearProperties( String pomPath, String key, int rowSpan )
             throws IOException {
+
+        boolean isKey    = false;    // 是否存在删除的key
+        int     keyIndex = 0;        // 存在key当前的索引
+
         File file = new File( pomPath );
 
-        boolean hasKey      = false;// 是否存在删除的key
-        int     hasKeyIndex = 0;// 存在key当前的索引
-
         if ( file.exists() ) {
-            InputStreamReader isr = new InputStreamReader( new FileInputStream( file ), "utf-8" );
-            BufferedReader    br  = new BufferedReader( isr );
 
-            List< String > lineContent = new ArrayList<>();
+            BufferedReader reader = new BufferedReader( new InputStreamReader( new FileInputStream( file ), "utf-8" ) );
+
+            List< String > content = new ArrayList<>();
             String         line;
-            while ( ( line = br.readLine() ) != null ) {
+            while ( ( line = reader.readLine() ) != null ) {
                 if ( StringUtils.isBlank( line ) ) {
-                    lineContent.add( "\n" );
+                    content.add( "\n" );
                 } else if ( line.startsWith( "#" ) ) {
-                    lineContent.add( line + "\n" );
+                    content.add( line + "\n" );
                 } else if ( line.trim().startsWith( key ) ) {
-                    if ( !hasKey ) {
-                        hasKeyIndex = lineContent.size() - 1;
+                    if ( !isKey ) {
+                        keyIndex = content.size() - 1;
                     }
-                    hasKey = true;
+                    isKey = true;
                 } else {
-                    lineContent.add( line + "\n" );
+                    content.add( line + "\n" );
                 }
             }
 
-            StringBuffer outStr = new StringBuffer();
-            if ( hasKeyIndex > 0 ) {
+            reader.close();
+
+            StringBuffer sb = new StringBuffer();
+            if ( keyIndex > 0 ) {
                 // 需要移除的范围
-                int endIndex = hasKeyIndex;// 移除元素结束索引
-                int begIndex = endIndex - commentLen;// 移除元素开始索引
+                int endIndex = keyIndex;// 移除元素结束索引
+                int begIndex = endIndex - rowSpan;// 移除元素开始索引
                 begIndex = begIndex < 0 ? 0 : begIndex;
 
-                for ( int i = 0; i < lineContent.size(); i++ ) {
+                for ( int i = 0; i < content.size(); i++ ) {
                     if ( i <= begIndex || i > endIndex ) {
-                        outStr.append( lineContent.get( i ) );
+                        sb.append( content.get( i ) );
                     }
                 }
             }
 
-            if ( hasKey ) {
-                FileWriter     fw = new FileWriter( file, false );
-                BufferedWriter bw = new BufferedWriter( fw );
-                bw.write( outStr.toString() );
-                bw.close();
-                fw.close();
+            if ( isKey ) {
+                BufferedWriter writer = new BufferedWriter( new FileWriter( file, false ) );
+                writer.write( sb.toString() );
+                writer.close();
+                writer.close();
                 return true;
             }
+
         }
+
         return false;
 
     }
 
-    public static void appendProperties( Map< String, String > map, String declaration, String component )
+    @SuppressWarnings( "resource" )
+    public static boolean appendProperties( String filePath, String keyword, Map< String, String > map )
             throws IOException {
 
-        Properties src      = new Properties();
-        String     propFile = DependencySupport.getPropertiesPath();
-        src.load( new FileInputStream( propFile ) );
+        File file = new File( filePath );
+        if ( file.exists() ) {
+            InputStreamReader isr = new InputStreamReader( new FileInputStream( file ), "utf-8" );
+            BufferedReader    br  = new BufferedReader( isr );
 
-        // 从.properties文件中读取key，并放入到Set中
-        Set< String >    set         = new HashSet<>();
-        Enumeration< ? > enumeration = src.propertyNames();
-        while ( enumeration.hasMoreElements() ) {
-            set.add( ( String ) enumeration.nextElement() );
-        }
+            StringBuffer content = new StringBuffer();
+            String       line;
 
-        Properties tar = new Properties();
-        for ( String key : map.keySet() ) {
-            boolean isExist = false;
-            for ( String k : set ) {
-                if ( key.equalsIgnoreCase( k ) ) {
-                    isExist = true;
-                    break;
+            while ( ( line = br.readLine() ) != null ) {
+
+                if ( StringUtils.isBlank( line ) ) {
+                    content.append( "\n" );
+                } else if ( line.startsWith( "#" ) ) {
+                    content.append( line + "\n" );
+                } else if ( line.trim().startsWith( keyword ) ) {
+                    return false;
+                } else {
+                    content.append( line + "\n" );
                 }
+
             }
 
-            if ( !isExist ) {
-                tar.setProperty( key, map.get( key ) );
+            content.append( commentsChinaToUnicode( MongoDBSupport.getMongoDBDeclaration() ) );
+
+            for ( String key : map.keySet() ) {
+                content.append( key + getSpace( 53, key.length() ) + "= " + map.get( key ) + "\n" );
+            }
+
+            FileWriter     fw = new FileWriter( file, false );
+            BufferedWriter bw = new BufferedWriter( fw );
+            bw.write( content.toString() );
+            bw.close();
+            fw.close();
+
+        }
+        return true;
+    }
+
+    public static StringBuffer commentsChinaToUnicode( String bf ) {
+
+        StringBuffer retBf = new StringBuffer();
+
+        char[] chars = bf.toCharArray();
+
+        for ( char charStr : chars ) {
+            //中文字符
+            if ( Character.getType( charStr ) == Character.OTHER_LETTER ) {
+                retBf.append( "\\u" + Integer.toHexString( charStr ) );
+            } else {
+                retBf.append( charStr );
             }
         }
+        return retBf;
+    }
 
-        if ( tar.size() != 0 ) {
-
-            FileWriter writer = new FileWriter( propFile, true );
-            tar.store( writer, declaration );
-            writer.close();
-
-            System.out.println( "====> Finish append component in properties file. Path is: ".replaceAll( "component", component ) + propFile );
-
-        } else {
-            System.out.println( "====> component config already exist in .properties file. ".replaceAll( "component", component ) );
+    private static String getSpace( int spaceLength, int keyLength ) {
+        String space = "";
+        for ( int i = keyLength; i < spaceLength; i++ ) {
+            space = space + " ";
         }
-
+        return space;
     }
 
 }

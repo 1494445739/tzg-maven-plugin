@@ -1,0 +1,7 @@
+#set( $pkg               = "com.tzg.web.project.mongodb" )
+#set( $pkg               = $pkg.replaceAll( "project", $project ) )
+package $pkg;
+
+import com.tzg.component.mongodb.proto.MongoDBProtoService;
+
+public interface FooService< Foo > extends MongoDBProtoService< Foo > { }
