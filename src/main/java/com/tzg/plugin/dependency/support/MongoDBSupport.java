@@ -59,17 +59,9 @@ public final class MongoDBSupport {
         String[] files     = getFiles();
 
         for ( int i = 0; i < files.length; i++ ) {
-            mergeTemplate( files[ i ], templates[ i ] );
+            DependencySupport.mergeTemplate( files[ i ], templates[ i ] );
         }
 
-    }
-
-    public static void removeMongoDBModule() throws IOException {
-        File file = new File( getMongoDBModulePath() );
-        if ( file.exists() ) {
-            FileUtils.forceDelete( file );
-        }
-        System.out.println( "====> delete mongodb module '$path' successfully.".replace( "$path", file.getAbsolutePath() ) );
     }
 
     public static String[] getTemplates() {
@@ -86,8 +78,8 @@ public final class MongoDBSupport {
     }
 
     public static String[] getFiles() {
-        String modelFile       = "Foo.java";
-        String ctrlFile        = "FooController.java";
+        String modelFile = "Foo.java";
+        String ctrlFile  = "FooController.java";
 
         String javaDir = getMongoDBModulePath();
 
@@ -95,27 +87,6 @@ public final class MongoDBSupport {
                 javaDir + modelFile,
                 javaDir + ctrlFile
         };
-    }
-
-    public static void mergeTemplate( String filePath, String tplPath ) throws IOException {
-
-        File file = new File( filePath );
-        FileUtils.touch( file );
-
-        Properties properties = new Properties();
-        properties.setProperty( "resource.loader", "class" );
-        properties.setProperty( "class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
-
-        VelocityEngine  engine  = new VelocityEngine( properties );
-        VelocityContext context = new VelocityContext();
-        context.put( "project", ModuleSupport.getCurrentProjectName() );
-
-        Writer writer = new BufferedWriter( new OutputStreamWriter( new FileOutputStream( file ), "UTF-8" ) );
-        engine.mergeTemplate( tplPath, "UTF-8", context, writer );
-
-        writer.flush();
-        writer.close();
-
     }
 
 }

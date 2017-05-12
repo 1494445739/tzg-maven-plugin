@@ -2,6 +2,7 @@ package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
+import com.tzg.plugin.dependency.support.RedisSupport;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -42,10 +43,15 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap() );
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration() );
                     MongoDBSupport.genMongoDBModule();
                     break;
                 case "3":
+                    component = "component-redis";
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.getRedisMap(), RedisSupport.getRedisDeclaration() );
+                    RedisSupport.genRedisDBModule();
+                    break;
+                case "4":
                     component = "web-auth";
                     break;
             }
