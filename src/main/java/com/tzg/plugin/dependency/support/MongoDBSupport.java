@@ -77,9 +77,7 @@ public final class MongoDBSupport {
 
         return new String[]{
                 vmJavaDir + "model.vm",
-                vmJavaDir + "controller.vm",
-                vmJavaDir + "service.vm",
-                vmJavaDir + "serviceImpl.vm"
+                vmJavaDir + "controller.vm"
         };
     }
 
@@ -90,16 +88,12 @@ public final class MongoDBSupport {
     public static String[] getFiles() {
         String modelFile       = "Foo.java";
         String ctrlFile        = "FooController.java";
-        String serviceFile     = "FooService.java";
-        String serviceImplFile = "FooServiceImpl.java";
 
         String javaDir = getMongoDBModulePath();
 
         return new String[]{
                 javaDir + modelFile,
-                javaDir + ctrlFile,
-                javaDir + serviceFile,
-                javaDir + serviceImplFile
+                javaDir + ctrlFile
         };
     }
 
