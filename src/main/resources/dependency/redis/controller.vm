@@ -1,75 +1,126 @@
-#set( $pkg = "com.tzg.web.project.mongodb" )
+#set( $pkg = "com.tzg.web.project.redis" )
 #set( $pkg = $pkg.replaceAll( "project", $project.toLowerCase() ) )
 package $pkg;
 
-import com.tzg.component.mongodb.MongoDBService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.tzg.service.support.json.JsonResp;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import java.util.List;
+import com.tzg.component.redis.RedisProtoService;
 
-@Controller( "mongodbFooController" )
-@RequestMapping( "/mongodb" )
+import javax.annotation.Resource;
+
+@Controller( "redisFooController" )
+@RequestMapping( "/redis" )
 public class FooController {
 
 	@Resource
-	private MongoDBService< Foo > mongoDBService;
+	private RedisProtoService redisProtoService;
 
 	@RequestMapping( "/post" )
 	@ResponseBody
 	public JsonResp post( Foo foo ) throws Exception {
-		mongoDBService.insert( foo, "foos" );
+		redisProtoService.put( "foo", foo );
 		return new JsonResp();
 	}
 
 	@RequestMapping( "/delete" )
 	@ResponseBody
 	public JsonResp delete( Foo foo ) throws Exception {
-		mongoDBService.delete(
-			new Query( Criteria.where( "id" ).is( foo.getId() ) ),
-			foo,
-			"foos"
-		);
+		redisProtoService.delete( "foo" );
 		return new JsonResp();
 	}
 
 	@RequestMapping( "/put" )
 	@ResponseBody
 	public JsonResp put( Foo foo ) throws Exception {
-		mongoDBService.update(
-			new Query( Criteria.where( "id" ).is( foo.getId() ) ),
-			new Update().set( "username", foo.getUsername() ),
-			foo,
-			"foos"
-		);
+		redisProtoService.put( "foo", foo );
 		return new JsonResp();
 	}
 
 	@RequestMapping( "/get" )
 	@ResponseBody
 	public JsonResp get( Foo foo ) throws Exception {
-		Foo u = mongoDBService.selectOne(
-			new Query( Criteria.where( "id" ).is( foo.getId() ) ),
-			foo,
-			"users"
-		);
-		return new JsonResp( JsonResp.OK, u );
+		Foo f = ( Foo ) redisProtoService.select( "foo" );
+		return new JsonResp( JsonResp.OK, f );
 	}
 
-	@RequestMapping( "/index" )
+	@RequestMapping( "/put/list" )
 	@ResponseBody
-	public JsonResp index( Foo foo ) throws Exception {
-		List< Foo > result = mongoDBService.selectList(
-			new Query( Criteria.where( "age" ).is( foo.getAge() ) ),
-			foo,
-			"users"
-		);
+	public JsonResp putList( Foo foo ) throws Exception {
+		List< Foo > list = new ArrayList<>();
+		list.add( foo );
+		redisProtoService.putList( "fooList", list );
+		return new JsonResp();
+	}
+
+	@RequestMapping( "/get/list" )
+	@ResponseBody
+	public JsonResp getList()	{
+		List< Foo > list = ( List< Foo > )redisProtoService.selectList( "fooList" );
+		return new JsonResp( JsonResp.OK, list );
+	}
+
+	@RequestMapping( "/put/map" )
+	@ResponseBody
+	public JsonResp putMap( Foo foo )	{
+		Map< String, Foo > map = new HashMap<>();
+		map.put( "foo", foo );
+		redisProtoService.putMap( "fooMap", map );
+		return new JsonResp();
+	}
+
+	@RequestMapping( "/get/map" )
+	@ResponseBody
+	public JsonResp getMap()	{
+		Map< String, Foo > map = ( Map< String, Foo > )redisProtoService.selectMap( "fooMap" );
+		return new JsonResp( JsonResp.OK, map );
+	}
+
+	@RequestMapping( "/put/set" )
+	@ResponseBody
+	public JsonResp putSet( Foo foo )	{
+		Set< Foo > set = new HashSet<>();
+		set.add( foo );
+		redisProtoService.putSet( "fooSet", set );
+		return new JsonResp();
+	}
+
+	@RequestMapping( "/get/set" )
+	@ResponseBody
+	public JsonResp getSet()	{
+		Set< Foo > set = ( Set< Foo > )redisProtoService.selectSet( "fooSet" );
+		return new JsonResp( JsonResp.OK, set );
+	}
+
+	@RequestMapping( "/put/zset" )
+	@ResponseBody
+	public JsonResp putZSet( Foo foo )	{
+		Set< Foo > zset = new HashSet<>();
+		zset.add( foo );
+		redisProtoService.putZSet( "fooZSet", zset );
+		return new JsonResp();
+	}
+
+	@RequestMapping( "/get/zset" )
+	@ResponseBody
+	public JsonResp getZSet()	{
+		Set< Foo > zset = ( Set< Foo > )redisProtoService.selectZSet( "fooZSet" );
+		return new JsonResp( JsonResp.OK, zset );
+	}
+
+	@RequestMapping("/has")
+	@ResponseBody
+	public JsonResp has() {
+		boolean result = redisProtoService.has( "foo" );
 		return new JsonResp( JsonResp.OK, result );
 	}
 
