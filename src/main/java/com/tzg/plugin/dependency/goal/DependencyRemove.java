@@ -1,6 +1,7 @@
 package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
+import com.tzg.plugin.dependency.support.DubboSupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
 import com.tzg.plugin.dependency.support.RedisSupport;
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +54,12 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "4":
                     component = "web-auth";
+                    break;
+                case "5":
+                    component = "component-dubbo";
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
+                    DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
+                    DubboSupport.removeXml();
                     break;
             }
 
