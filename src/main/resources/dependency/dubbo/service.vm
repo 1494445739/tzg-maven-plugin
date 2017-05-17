@@ -1,0 +1,9 @@
+#set( $pkg = "com.tzg.web.project.dubbo.provider" )
+#set( $pkg = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+package $pkg;
+
+public interface FooService {
+
+    String propmt();
+
+}
