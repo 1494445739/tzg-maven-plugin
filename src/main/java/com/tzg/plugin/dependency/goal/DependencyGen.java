@@ -1,6 +1,7 @@
 package com.tzg.plugin.dependency.goal;
 
 import com.tzg.plugin.dependency.support.DependencySupport;
+import com.tzg.plugin.dependency.support.DubboSupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
 import com.tzg.plugin.dependency.support.RedisSupport;
 import org.apache.maven.plugin.AbstractMojo;
@@ -53,6 +54,11 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "4":
                     component = "web-auth";
+                    break;
+                case "5":
+                    component = "component-dubbo";
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
+                    DubboSupport.genDubboModule();
                     break;
             }
 

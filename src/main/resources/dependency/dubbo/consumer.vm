@@ -1,0 +1,27 @@
+#set( $pkg = "com.tzg.web.project.dubbo.consumer" )
+#set( $pkg = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+package $pkg;
+
+import com.tzg.web.foo.dubbo.provider.FooService;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Consumer {
+
+    public static void main( String[] args ) {
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                new String[]{ "spring/x-dubbo-foo-consumer.xml" } );
+
+        context.start();
+
+        FooService fooService = ( FooService ) context.getBean( "dubboFooService" );
+        String     prompt     = fooService.propmt();
+
+        System.out.println( "---------------------------------" );
+        System.out.println( "| Dubbo Consumer Invoke:        |" );
+        System.out.println( "---------------------------------" );
+        System.out.println( prompt );
+
+    }
+
+}
