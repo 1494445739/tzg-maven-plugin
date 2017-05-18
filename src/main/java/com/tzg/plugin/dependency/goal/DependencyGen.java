@@ -44,12 +44,12 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration() );
+                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration() );
                     MongoDBSupport.genMongoDBModule();
                     break;
                 case "3":
                     component = "component-redis";
-                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.getRedisMap(), RedisSupport.getRedisDeclaration() );
+                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.getRedisMap(), RedisSupport.getRedisDeclaration() );
                     RedisSupport.genRedisDBModule();
                     break;
                 case "4":
@@ -57,7 +57,7 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "5":
                     component = "component-dubbo";
-                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
+                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
                     break;
             }

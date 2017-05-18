@@ -44,12 +44,12 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
+//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
                     DependencySupport.removeModule( MongoDBSupport.getMongoDBModulePath(), "mongoDB" );
                     break;
                 case "3":
                     component = "component-redis";
-                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
+//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
@@ -57,7 +57,7 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "5":
                     component = "component-dubbo";
-                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
+//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
                     DubboSupport.removeXml();
                     break;
