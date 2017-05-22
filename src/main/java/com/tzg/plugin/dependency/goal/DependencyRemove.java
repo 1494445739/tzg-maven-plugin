@@ -44,12 +44,12 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
+                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
                     DependencySupport.removeModule( MongoDBSupport.getMongoDBModulePath(), "mongoDB" );
                     break;
                 case "3":
                     component = "component-redis";
-//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
+                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
@@ -57,7 +57,7 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "5":
                     component = "component-dubbo";
-//                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
+                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
                     DubboSupport.removeXml();
                     break;
@@ -69,20 +69,24 @@ public class DependencyRemove extends AbstractMojo {
             SAXReader reader   = new SAXReader();
             Document  document = reader.read( pomPath );
 
-            Element         dependencies   = DependencySupport.getDependenciesElement( document );
-            List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
+            Element dependencies = DependencySupport.getDependenciesElement( document );
+            if ( dependencies != null ) {
+                List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
 
-            if ( dependencyList.size() != 0 ) {
+                if ( dependencyList.size() != 0 ) {
 
-                for ( Element dependency : dependencyList ) {
-                    dependencies.remove( dependency );
+                    for ( Element dependency : dependencyList ) {
+                        dependencies.remove( dependency );
+                    }
+
+                    DependencySupport.pomWriter( pomPath, document );
+                    System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
+
+                } else {
+                    System.out.println( "====> Dependency component doesn't exist in pom.xml".replaceAll( "component", component ) );
                 }
-
-                DependencySupport.pomWriter( pomPath, document );
-                System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
-
             } else {
-                System.out.println( "====> Dependency component doesn't exist in pom.xml".replaceAll( "component", component ) );
+                System.out.println( "====> No dependencies Element exist." );
             }
 
         } catch ( DocumentException e ) {
