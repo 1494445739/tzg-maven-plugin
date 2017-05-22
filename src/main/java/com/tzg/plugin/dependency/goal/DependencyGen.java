@@ -15,6 +15,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,9 +70,19 @@ public class DependencyGen extends AbstractMojo {
             Document  document = reader.read( pomPath );
 
             Element         dependencies   = DependencySupport.getDependenciesElement( document );
-            List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
+            List< Element > dependencyList = new ArrayList<>();
+
+            if ( dependencies != null ) {
+                dependencyList = DependencySupport.getDependencyElement( component, dependencies );
+            }
 
             if ( dependencyList.size() == 0 ) {
+
+                if ( dependencies == null ) {
+                    Element rootElement = document.getRootElement();
+                    dependencies = rootElement.addElement( "dependencies" );
+                }
+
                 // create <dependency> node
                 Element dependencyElement = dependencies.addElement( "dependency" );
                 dependencyElement.addElement( "groupId" ).addText( "com.tzg" );
