@@ -4,7 +4,6 @@ import com.tzg.plugin.dependency.support.DependencySupport;
 import com.tzg.plugin.dependency.support.DubboSupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
 import com.tzg.plugin.dependency.support.RedisSupport;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -79,12 +78,18 @@ public class DependencyRemove extends AbstractMojo {
                         dependencies.remove( dependency );
                     }
 
-                    DependencySupport.pomWriter( pomPath, document );
-                    System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
-
                 } else {
                     System.out.println( "====> Dependency component doesn't exist in pom.xml".replaceAll( "component", component ) );
                 }
+
+                // 如果dependencies标签为空, 则删除之
+                if ( dependencies.isTextOnly() ) {
+                    dependencies.getParent().remove( dependencies );
+                }
+
+                DependencySupport.pomWriter( pomPath, document );
+                System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
+
             } else {
                 System.out.println( "====> No dependencies Element exist." );
             }
