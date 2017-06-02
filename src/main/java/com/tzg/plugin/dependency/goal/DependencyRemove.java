@@ -1,10 +1,7 @@
 package com.tzg.plugin.dependency.goal;
 
 
-import com.tzg.plugin.dependency.support.DependencySupport;
-import com.tzg.plugin.dependency.support.DubboSupport;
-import com.tzg.plugin.dependency.support.MongoDBSupport;
-import com.tzg.plugin.dependency.support.RedisSupport;
+import com.tzg.plugin.dependency.support.*;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -54,7 +51,6 @@ public class DependencyRemove extends AbstractMojo {
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
-                case "5":
                     component = "web-auth";
                     break;
                 case "5":
