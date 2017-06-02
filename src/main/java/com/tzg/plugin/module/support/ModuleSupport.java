@@ -73,6 +73,14 @@ public final class ModuleSupport {
 
     }
 
+    public static String getModulePath() {
+        return ROOT_PATH + "/src/main/java/com/tzg/web/" + getCurrentProjectName();
+    }
+
+    public static String getMapperPath() {
+        return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName();
+    }
+
     /**
      * 返回velocity模板路径集合。
      */
