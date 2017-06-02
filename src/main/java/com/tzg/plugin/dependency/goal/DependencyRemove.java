@@ -52,9 +52,10 @@ public class DependencyRemove extends AbstractMojo {
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
+                case "5":
                     component = "web-auth";
                     break;
-                case "5":
+                case "6":
                     component = "component-dubbo";
                     //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
