@@ -40,7 +40,8 @@ public class ModuleRemove extends AbstractMojo {
                 module = prompter.prompt( PROMPT );
             }
 
-            removeFiles( ModuleSupport.getFiles( module ) );
+            removeFiles( new String[]{ ModuleSupport.getModulePath( module ) } );
+            removeFiles( new String[]{ ModuleSupport.getMapperPath() } );
 
         } catch ( Exception e ) {
             e.printStackTrace();

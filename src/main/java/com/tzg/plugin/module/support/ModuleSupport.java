@@ -59,18 +59,26 @@ public final class ModuleSupport {
         String xmlMapperFileName = module.substring( 0, 1 ).toLowerCase() + module.substring( 1 ) + ".xml";
 
         String project      = getCurrentProjectName();
-        String javaDir      = ROOT_PATH + "/src/main/java/com/tzg/web/" + project;
+        String javaDir      = ROOT_PATH + "/src/main/java/com/tzg/web/" + project + "/" + module.toLowerCase();
         String xmlMapperDir = ROOT_PATH + "/src/main/resources/mybatis/" + project;
 
         return new String[]{
-                javaDir + "/bean/" + modelFileName,
-                javaDir + "/mapper/" + mapperFileName,
-                javaDir + "/controller/" + ctrlFileName,
-                javaDir + "/service/api/" + servApiFileName,
-                javaDir + "/service/impl/" + servImplFileName,
+                javaDir + "/" + modelFileName,
+                javaDir + "/" + mapperFileName,
+                javaDir + "/" + ctrlFileName,
+                javaDir + "/" + servApiFileName,
+                javaDir + "/" + servImplFileName,
                 xmlMapperDir + "/" + xmlMapperFileName
         };
 
+    }
+
+    public static String getModulePath( String module ) {
+        return ROOT_PATH + "/src/main/java/com/tzg/web/" + getCurrentProjectName() + "/" + module.toLowerCase();
+    }
+
+    public static String getMapperPath() {
+        return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName();
     }
 
     /**
