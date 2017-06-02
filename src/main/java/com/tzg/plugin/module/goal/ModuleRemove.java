@@ -40,8 +40,8 @@ public class ModuleRemove extends AbstractMojo {
                 module = prompter.prompt( PROMPT );
             }
 
-            removeFiles( new String[]{ ModuleSupport.getModulePath( module ) } );
-            removeFiles( new String[]{ ModuleSupport.getMapperPath() } );
+            removeFiles( ModuleSupport.getModulePath( module ) );
+            removeFiles( ModuleSupport.getMapperPath() );
 
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -49,15 +49,9 @@ public class ModuleRemove extends AbstractMojo {
 
     }
 
-    private void removeFiles( String[] files ) throws IOException {
-
-        for ( String file : files ) {
-
-            FileUtils.forceDelete( new File( file ) );
-            getLog().info( "delete file $file successfully.".replace( "$file", file ) );
-
-        }
-
+    private void removeFiles( String file ) throws IOException {
+        FileUtils.forceDelete( new File( file ) );
+        getLog().info( "delete file $file successfully.".replace( "$file", file ) );
     }
 
 }
