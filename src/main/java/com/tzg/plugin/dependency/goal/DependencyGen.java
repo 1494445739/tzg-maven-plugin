@@ -37,8 +37,9 @@ public class DependencyGen extends AbstractMojo {
 
         try {
 
-            String component = null;
-            String index     = DependencySupport.getIndex( prompter, prompt );
+            String  component    = null;
+            boolean isCandidated = false;   // 针对组件的候选版本，比如1.0.2-RC
+            String  index        = DependencySupport.getIndex( prompter, prompt );
             switch ( index ) {
                 case "1":
                     component = "component-browser-starter";
@@ -57,10 +58,15 @@ public class DependencyGen extends AbstractMojo {
                     component = "web-auth";
                     break;
                 case "5":
+                    component = "web-auth";
+                    isCandidated = true;
+                    break;
+                case "6":
                     component = "component-dubbo";
                     // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
                     break;
+
             }
 
             // 读取xml，根据输入的component进行查找，如果查找不到，则生成相关的组件，并写入pom.xml文件
@@ -89,11 +95,16 @@ public class DependencyGen extends AbstractMojo {
                 dependencyElement.addElement( "artifactId" ).addText( component );
 
                 if ( component.contains( "web-" ) ) {
+                    if ( isCandidated ) {
+                        dependencyElement.addElement( "version" ).addText( "${project.parent.version}-RC" );
+                    }
                     dependencyElement.addElement( "type" ).addText( "war" );
 
                     Element warClassifierDependency = dependencies.addElement( "dependency" );
                     warClassifierDependency.addElement( "groupId" ).addText( "com.tzg" );
                     warClassifierDependency.addElement( "artifactId" ).addText( component );
+                    if ( isCandidated )
+                        warClassifierDependency.addElement( "version" ).addText( "${project.parent.version}-RC" );
                     warClassifierDependency.addElement( "classifier" ).addText( "classes" );
                 }
             }
