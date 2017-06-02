@@ -1,9 +1,6 @@
 package com.tzg.plugin.dependency.goal;
 
-import com.tzg.plugin.dependency.support.DependencySupport;
-import com.tzg.plugin.dependency.support.DubboSupport;
-import com.tzg.plugin.dependency.support.MongoDBSupport;
-import com.tzg.plugin.dependency.support.RedisSupport;
+import com.tzg.plugin.dependency.support.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -38,7 +35,7 @@ public class DependencyGen extends AbstractMojo {
         try {
 
             String  component    = null;
-            boolean isCandidated = false;   // 针对组件的候选版本，比如1.0.2-RC
+            boolean isCandidated = false;   // 针对组件的候选版本，比如1.0.1-RC
             String  index        = DependencySupport.getIndex( prompter, prompt );
             switch ( index ) {
                 case "1":
@@ -46,12 +43,12 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration() );
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.getMongoDBMap(), MongoDBSupport.getMongoDBDeclaration() );
                     MongoDBSupport.genMongoDBModule();
                     break;
                 case "3":
                     component = "component-redis";
-                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.getRedisMap(), RedisSupport.getRedisDeclaration() );
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.getRedisMap(), RedisSupport.getRedisDeclaration() );
                     RedisSupport.genRedisDBModule();
                     break;
                 case "4":
@@ -59,11 +56,12 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "5":
                     component = "web-auth";
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "cas", AuthSupport.getAuthMap(), AuthSupport.getAuthDeclaration() );
                     isCandidated = true;
                     break;
                 case "6":
                     component = "component-dubbo";
-                    // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
                     break;
                 case "7":

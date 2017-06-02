@@ -113,7 +113,6 @@ public final class DependencySupport {
 
         int i = 1; // 控制打印的索引
         while ( !DependencySupport.isNumeric( index ) || ( Integer.valueOf( index ) < 0 || Integer.valueOf( index ) > 7 ) ) {
-
             if ( i++ != 1 ) {
                 errMsg.append( "\n" ); // 第一次输入的时候不打印空行，反之则打印空行
             }
