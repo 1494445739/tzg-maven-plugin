@@ -1,9 +1,6 @@
 package com.tzg.plugin.dependency.goal;
 
-import com.tzg.plugin.dependency.support.DependencySupport;
-import com.tzg.plugin.dependency.support.DubboSupport;
-import com.tzg.plugin.dependency.support.MongoDBSupport;
-import com.tzg.plugin.dependency.support.RedisSupport;
+import com.tzg.plugin.dependency.support.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -37,8 +34,9 @@ public class DependencyGen extends AbstractMojo {
 
         try {
 
-            String component = null;
-            String index     = DependencySupport.getIndex( prompter, prompt );
+            String  component    = null;
+            boolean isCandidated = false;   // 针对组件的候选版本，比如1.0.1-RC
+            String  index        = DependencySupport.getIndex( prompter, prompt );
             switch ( index ) {
                 case "1":
                     component = "component-browser-starter";
@@ -57,6 +55,11 @@ public class DependencyGen extends AbstractMojo {
                     component = "web-auth";
                     break;
                 case "5":
+                    component = "web-auth";
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "auth", AuthSupport.getAuthMap(), AuthSupport.getAuthDeclaration() );
+                    isCandidated = true;
+                    break;
+                case "6":
                     component = "component-dubbo";
                     DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
@@ -89,11 +92,16 @@ public class DependencyGen extends AbstractMojo {
                 dependencyElement.addElement( "artifactId" ).addText( component );
 
                 if ( component.contains( "web-" ) ) {
+                    if ( isCandidated ) {
+                        dependencyElement.addElement( "version" ).addText( "${project.parent.version}-RC" );
+                    }
                     dependencyElement.addElement( "type" ).addText( "war" );
 
                     Element warClassifierDependency = dependencies.addElement( "dependency" );
                     warClassifierDependency.addElement( "groupId" ).addText( "com.tzg" );
                     warClassifierDependency.addElement( "artifactId" ).addText( component );
+                    if ( isCandidated )
+                        warClassifierDependency.addElement( "version" ).addText( "${project.parent.version}-RC" );
                     warClassifierDependency.addElement( "classifier" ).addText( "classes" );
                 }
             }

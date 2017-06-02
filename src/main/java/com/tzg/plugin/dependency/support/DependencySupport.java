@@ -97,7 +97,8 @@ public final class DependencySupport {
         sb.append( "2) component-mongodb \n" );
         sb.append( "3) component-redis \n" );
         sb.append( "4) web-auth\n" );
-        sb.append( "5) component-dubbo\n" );
+        sb.append( "5) web-auth ( sso )\n" );
+        sb.append( "6) component-dubbo\n" );
         sb.append( "Please enter the number you want to keyword. Default is No.1)" );
 
         return sb.toString().replaceAll( "keyword", keyword );
@@ -110,7 +111,7 @@ public final class DependencySupport {
         String index = StringUtils.isBlank( input ) ? "1" : input;
 
         int i = 1; // 控制打印的索引
-        while ( !DependencySupport.isNumeric( index ) || ( Integer.valueOf( index ) < 0 || Integer.valueOf( index ) > 5 ) ) {
+        while ( !DependencySupport.isNumeric( index ) || ( Integer.valueOf( index ) < 0 || Integer.valueOf( index ) > 6 ) ) {
 
             if ( i++ != 1 ) {
                 errMsg.append( "\n" ); // 第一次输入的时候不打印空行，反之则打印空行

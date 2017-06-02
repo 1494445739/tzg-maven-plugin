@@ -1,9 +1,6 @@
 package com.tzg.plugin.dependency.goal;
 
-import com.tzg.plugin.dependency.support.DependencySupport;
-import com.tzg.plugin.dependency.support.DubboSupport;
-import com.tzg.plugin.dependency.support.MongoDBSupport;
-import com.tzg.plugin.dependency.support.RedisSupport;
+import com.tzg.plugin.dependency.support.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -55,6 +52,10 @@ public class DependencyRemove extends AbstractMojo {
                     component = "web-auth";
                     break;
                 case "5":
+                    component = "web-auth";
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "cas", AuthSupport.AUTH_COMMENT_LENGTH );
+                    break;
+                case "6":
                     component = "component-dubbo";
                     DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
@@ -68,7 +69,7 @@ public class DependencyRemove extends AbstractMojo {
             SAXReader reader   = new SAXReader();
             Document  document = reader.read( pomPath );
 
-            Element         dependencies   = DependencySupport.getDependenciesElement( document );
+            Element dependencies = DependencySupport.getDependenciesElement( document );
             if ( dependencies != null ) {
                 List< Element > dependencyList = DependencySupport.getDependencyElement( component, dependencies );
 
@@ -90,7 +91,7 @@ public class DependencyRemove extends AbstractMojo {
                 DependencySupport.pomWriter( pomPath, document );
                 System.out.println( "====> Remove component dependency successfully".replaceAll( "component", component ) );
 
-            } else   {
+            } else {
                 System.out.println( "====> No dependencies Element exist." );
             }
 
