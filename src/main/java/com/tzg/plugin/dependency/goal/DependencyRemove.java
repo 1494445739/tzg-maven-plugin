@@ -1,6 +1,11 @@
 package com.tzg.plugin.dependency.goal;
 
-import com.tzg.plugin.dependency.support.*;
+
+import com.tzg.plugin.dependency.support.DependencySupport;
+import com.tzg.plugin.dependency.support.DubboSupport;
+import com.tzg.plugin.dependency.support.MongoDBSupport;
+import com.tzg.plugin.dependency.support.RedisSupport;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -49,6 +54,7 @@ public class DependencyRemove extends AbstractMojo {
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
+                case "5":
                     component = "web-auth";
                     break;
                 case "5":
@@ -60,6 +66,9 @@ public class DependencyRemove extends AbstractMojo {
                     DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
                     DubboSupport.removeXml();
+                    break;
+                case "7":
+                    component = "component-druid-statistics";
                     break;
             }
 

@@ -56,7 +56,7 @@ public class DependencyGen extends AbstractMojo {
                     break;
                 case "5":
                     component = "web-auth";
-                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "auth", AuthSupport.getAuthMap(), AuthSupport.getAuthDeclaration() );
+                    DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "cas", AuthSupport.getAuthMap(), AuthSupport.getAuthDeclaration() );
                     isCandidated = true;
                     break;
                 case "6":
@@ -64,6 +64,10 @@ public class DependencyGen extends AbstractMojo {
                     DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
                     break;
+                case "7":
+                    component = "component-druid-statistics";
+                    break;
+
             }
 
             // 读取xml，根据输入的component进行查找，如果查找不到，则生成相关的组件，并写入pom.xml文件
