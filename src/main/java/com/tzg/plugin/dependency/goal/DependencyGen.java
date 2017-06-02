@@ -66,6 +66,9 @@ public class DependencyGen extends AbstractMojo {
                     // DependencySupport.appendProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.getDubboMap(), DubboSupport.getDubboDeclaration() );
                     DubboSupport.genDubboModule();
                     break;
+                case "7":
+                    component = "component-druid-statistics";
+                    break;
 
             }
 
