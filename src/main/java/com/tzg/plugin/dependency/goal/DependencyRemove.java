@@ -1,9 +1,11 @@
 package com.tzg.plugin.dependency.goal;
 
+
 import com.tzg.plugin.dependency.support.DependencySupport;
 import com.tzg.plugin.dependency.support.DubboSupport;
 import com.tzg.plugin.dependency.support.MongoDBSupport;
 import com.tzg.plugin.dependency.support.RedisSupport;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -43,21 +45,25 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "2":
                     component = "component-mongodb";
-                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "mongoDB", MongoDBSupport.MONGODB_COMMENT_LENGTH );
                     DependencySupport.removeModule( MongoDBSupport.getMongoDBModulePath(), "mongoDB" );
                     break;
                 case "3":
                     component = "component-redis";
-                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "redis", RedisSupport.REDIS_COMMENT_LENGTH );
                     DependencySupport.removeModule( RedisSupport.getRedisModulePath(), "redis" );
                     break;
                 case "4":
                 case "5":
                     component = "web-auth";
                     break;
+                case "5":
+                    component = "web-auth";
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "cas", AuthSupport.AUTH_COMMENT_LENGTH );
+                    break;
                 case "6":
                     component = "component-dubbo";
-                    //                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
+                    DependencySupport.clearProperties( DependencySupport.getPropertiesPath(), "dubbo", DubboSupport.DUBBO_COMMENT_LENGTH );
                     DependencySupport.removeModule( DubboSupport.getDubboModulePath(), "dubbo" );
                     DubboSupport.removeXml();
                     break;
