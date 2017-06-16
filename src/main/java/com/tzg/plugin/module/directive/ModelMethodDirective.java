@@ -35,13 +35,13 @@ public class ModelMethodDirective extends Directive {
         fragment.append( "#set( $setter   = 'set' + $propName )" );
         fragment.append( "#set( $prop     = $stringHelper.camel( $columnMetadata.columnName.toLowerCase() ) )" );
 
-        fragment.append( "\tpublic $javaType $getter() {" );
+        fragment.append( "public $javaType $getter() {" );
         fragment.append( "  return $prop;  " );
         fragment.append( "}" );
 
         fragment.append( "\n" );
 
-        fragment.append( "\tpublic void $setter( $javaType $prop ) {" );
+        fragment.append( "public void $setter( $javaType $prop ) {" );
         fragment.append( "  this.$prop = $prop;  " );
         fragment.append( "}" );
 

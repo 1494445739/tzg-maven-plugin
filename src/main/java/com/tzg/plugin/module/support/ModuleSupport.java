@@ -32,12 +32,12 @@ public final class ModuleSupport {
      */
     public static String getCurrentProjectName() {
 
-        String project;
+        String project = ROOT_PATH.substring( ROOT_PATH.lastIndexOf( System.getProperty( "file.separator" ) ) );
 
-        if ( ROOT_PATH.lastIndexOf( "-" ) < 0 ) {
-            project = ROOT_PATH.substring( ROOT_PATH.lastIndexOf( System.getProperty( "file.separator" ) ) + 1 );
-        } else {
-            project = ROOT_PATH.substring( ROOT_PATH.lastIndexOf( "-" ) + 1 );
+        if ( project.lastIndexOf( "-" ) > 0 ) {
+            int startPos = project.indexOf( "-" ) + 1;
+            int endPos   = startPos + project.substring( startPos ).indexOf( "-" );
+            project = project.substring( startPos, endPos );
         }
 
         return project;
@@ -77,8 +77,8 @@ public final class ModuleSupport {
         return ROOT_PATH + "/src/main/java/com/tzg/web/" + getCurrentProjectName() + "/" + module.toLowerCase();
     }
 
-    public static String getMapperPath() {
-        return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName();
+    public static String getMapperPath( String module ) {
+        return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName() + "/" + module.substring( 0, 1 ).toLowerCase() + module.substring( 1 ) + ".xml";
     }
 
     /**

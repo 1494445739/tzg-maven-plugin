@@ -63,10 +63,10 @@ public class ModelToStringDirective extends Directive {
         sb.append( "#set( $len   = $toStr.length() - 3 )" );
         sb.append( "#set( $toStr = $toStr.substring( 0, $len ) )" );
 
-        sb.append( "\t@Override" ).append( "\n" );
-        sb.append( "\tpublic String toString()    {" ).append( "\n\t" );
-        sb.append( "\t\treturn \"$className{\" + $toStr + '}';" ).append( "\n\t" );
-        sb.append( "\t}" ).append( "\n" );
+        sb.append( "@Override" ).append( "\n" );
+        sb.append( "public String toString()    {" ).append( "\n\t" );
+        sb.append( "  return \"$className{\" + $toStr + '}';" ).append( "\n\t" );
+        sb.append( "}" ).append( "\n" );
 
         map.put( "content", sb.toString() );
 

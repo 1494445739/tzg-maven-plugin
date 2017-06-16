@@ -41,7 +41,7 @@ public class ModuleRemove extends AbstractMojo {
             }
 
             removeFiles( ModuleSupport.getModulePath( module ) );
-            removeFiles( ModuleSupport.getMapperPath() );
+            removeFiles( ModuleSupport.getMapperPath( module ) );
 
         } catch ( Exception e ) {
             e.printStackTrace();
