@@ -1,22 +1,14 @@
-#set( $pkg                 = "com.tzg.web.project.service.impl" )
-#set( $pkg                 = $pkg.replaceAll( "project", $project ) )
-#set( $mapperClass         = $module + "Mapper" ) 
+#set( $pkg                 = "com.tzg.web.project." )
+#set( $pkg                 = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+#set( $pkg                 = $pkg + $module.substring(0, 1).toLowerCase() + $module.substring(1) )
+#set( $mapperClass         = $module + "Mapper" )
 #set( $servClass           = $module + "Service" )
 #set( $ClassName           = $module + "ServiceImpl" )
-#set( $modelQualifiedName   = "com.tzg.web.project.bean." )
-#set( $modelQualifiedName   = $modelQualifiedName.replaceAll( "project", $project ) + $module )
-#set( $mapperQualifiedName = "com.tzg.web.project.mapper." )
-#set( $mapperQualifiedName = $mapperQualifiedName.replaceAll( "project", $project ) + $mapperClass )
-#set( $servQualifiedName   = "com.tzg.web.project.service.api.")
-#set( $servQualifiedName   = $servQualifiedName.replaceAll( "project", $project) + $servClass )
 #set( $mapperVal           = $module.substring(0, 1).toLowerCase() + $module.substring(1) + "Mapper" )
 package $pkg;
 
 import com.tzg.service.support.proto.ProtoMapper;
 import com.tzg.service.support.proto.ProtoServiceImpl;
-import $modelQualifiedName;
-import $mapperQualifiedName;
-import $servQualifiedName;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,4 +23,5 @@ public class $ClassName extends ProtoServiceImpl< $module > implements $servClas
     protected ProtoMapper< $module > getMapper() {
         return $mapperVal;
     }
+
 }

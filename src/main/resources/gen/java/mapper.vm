@@ -1,12 +1,11 @@
-#set( $pkg               = "com.tzg.web.project.mapper" )
-#set( $pkg               = $pkg.replaceAll( "project", $project ) )
-#set( $modelQualifiedName = "com.tzg.web.project.bean." )
-#set( $modelQualifiedName = $modelQualifiedName.replaceAll( "project", $project ) + $module )
+#set( $pkg               = "com.tzg.web.project." )
+#set( $pkg               = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+#set( $ClassName         = $module )
+#set( $pkg               = $pkg + $ClassName.substring(0, 1).toLowerCase() + $ClassName.substring(1) )
 #set( $ClassName         = $module + "Mapper" )
 package $pkg;
 
 import com.tzg.service.support.proto.ProtoMapper;
-import $modelQualifiedName;
 import org.springframework.stereotype.Repository;
 
 @Repository

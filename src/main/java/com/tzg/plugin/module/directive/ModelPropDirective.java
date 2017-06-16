@@ -29,7 +29,7 @@ public class ModelPropDirective extends Directive {
             throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
 
         StringBuilder fragment = new StringBuilder();
-        fragment.append( "private $javaType $stringHelper.camel( $columnMetadata.columnName.toLowerCase() );" );
+        fragment.append( "\tprivate $javaType $stringHelper.camel( $columnMetadata.columnName.toLowerCase() );" );
         fragment.append( "\t" );
         fragment.append( "#if( $columnMetadata.remarks != '' )" );
         fragment.append( "// $columnMetadata.remarks" );
