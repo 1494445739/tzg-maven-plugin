@@ -73,8 +73,8 @@ public final class ModuleSupport {
 
     }
 
-    public static String getModulePath( String module ) {
-        return ROOT_PATH + "/src/main/java/com/tzg/web/" + getCurrentProjectName() + "/" + module.toLowerCase();
+    public static String getModulePath() {
+        return ROOT_PATH + "/src/main/java/com/tzg/web/" + getCurrentProjectName();
     }
 
     public static String getMapperPath( String module ) {

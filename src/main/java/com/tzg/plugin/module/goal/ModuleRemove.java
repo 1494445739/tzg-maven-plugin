@@ -10,6 +10,8 @@ import org.codehaus.plexus.components.interactivity.Prompter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @goal rm
@@ -40,7 +42,18 @@ public class ModuleRemove extends AbstractMojo {
                 module = prompter.prompt( PROMPT );
             }
 
-            removeFiles( ModuleSupport.getModulePath( module ) );   // 删除module
+            String         modulePath      = ModuleSupport.getModulePath();
+            List< String > moduleFilesPath = new ArrayList<>();
+            moduleFilesPath.add( modulePath + "/bean/" + module + ".java" );
+            moduleFilesPath.add( modulePath + "/controller/" + module + "Controller.java" );
+            moduleFilesPath.add( modulePath + "/mapper/" + module + "Mapper.java" );
+            moduleFilesPath.add( modulePath + "/service/api/" + module + "Service.java" );
+            moduleFilesPath.add( modulePath + "/service/impl/" + module + "ServiceImpl.java" );
+
+            for ( String moduleFilePath : moduleFilesPath ) {
+                removeFiles( moduleFilePath );   // 删除module
+            }
+
             removeFiles( ModuleSupport.getMapperPath( module ) );   // 删除mapper.xml
 
         } catch ( Exception e ) {
