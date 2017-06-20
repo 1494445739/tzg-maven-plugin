@@ -225,8 +225,8 @@ public final class DependencySupport {
 
             }
 
-            // content.append( comment2Unicode( declaration ) );
-            content.append( declaration );
+            content.append( comment2Unicode( declaration ) );
+            // content.append( declaration );
 
             for ( String key : map.keySet() ) {
                 content.append( format( key, key.length() ) + "= " + map.get( key ) + "\n" );
