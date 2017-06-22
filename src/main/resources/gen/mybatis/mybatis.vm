@@ -1,7 +1,7 @@
-#set( $beanQualifiedName = "com.tzg.web.project.bean." )
-#set( $beanQualifiedName = $beanQualifiedName.replaceAll( "project", $project ) + $module )
-#set( $mapperQualifiedName = "com.tzg.web.project.mapper." )
-#set( $mapperQualifiedName = $mapperQualifiedName.replaceAll( "project", $project ) + $module + "Mapper" )
+#set( $beanQualifiedName = "com.tzg.web.project." )
+#set( $beanQualifiedName = $beanQualifiedName.replaceAll( "project", $project ) + $module.substring(0, 1).toLowerCase() + $module.substring(1) + "." + $module )
+#set( $mapperQualifiedName = "com.tzg.web.project." )
+#set( $mapperQualifiedName = $mapperQualifiedName.replaceAll( "project", $project ) + $module.substring(0, 1).toLowerCase() + $module.substring(1) + "." + $module + "Mapper" )
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="$mapperQualifiedName">
