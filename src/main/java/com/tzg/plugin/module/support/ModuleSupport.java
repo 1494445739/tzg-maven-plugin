@@ -81,6 +81,10 @@ public final class ModuleSupport {
         return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName() + "/" + module.substring( 0, 1 ).toLowerCase() + module.substring( 1 ) + ".xml";
     }
 
+    public static String getMapperDirPath() {
+        return ROOT_PATH + "/src/main/resources/mybatis/" + getCurrentProjectName();
+    }
+
     /**
      * 返回velocity模板路径集合。
      */

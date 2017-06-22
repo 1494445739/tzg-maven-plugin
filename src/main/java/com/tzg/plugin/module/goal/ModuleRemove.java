@@ -56,6 +56,25 @@ public class ModuleRemove extends AbstractMojo {
 
             removeFiles( ModuleSupport.getMapperPath( module ) );   // 删除mapper.xml
 
+            // 如果项目下目录为null，则一并删除空目录
+            List< String > moduleDirPath = new ArrayList<>();
+            moduleDirPath.add( modulePath + "/bean" );
+            moduleDirPath.add( modulePath + "/controller" );
+            moduleDirPath.add( modulePath + "/mapper" );
+            moduleDirPath.add( modulePath + "/service/api" );
+            moduleDirPath.add( modulePath + "/service/impl" );
+            moduleDirPath.add( modulePath + "/service" );
+
+            moduleDirPath.add( ModuleSupport.getMapperDirPath() );
+
+            for ( String path : moduleDirPath ) {
+                File dir = new File( path );
+                if ( dir.list().length == 0 ) {
+                    removeFiles( dir.getAbsolutePath() );
+                }
+            }
+
+
         } catch ( Exception e ) {
             e.printStackTrace();
         }
