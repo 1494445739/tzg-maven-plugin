@@ -69,6 +69,9 @@ public class DependencyGen extends AbstractMojo {
                 case "7":
                     component = "component-druid-statistics";
                     break;
+                case "8":
+                    component = "component-logback-dynamic-config";
+                    break;
 
             }
 
