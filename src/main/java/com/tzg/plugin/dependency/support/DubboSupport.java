@@ -19,7 +19,7 @@ public final class DubboSupport {
         Map< String, String > map = new HashMap<>();
         map.put( "dubbo.application.provider", "foo-provider" );
         map.put( "dubbo.application.consumer", "foo-consumer" );
-        map.put( "dubbo.registry.address", "zookeeper://192.168.1.233:2181" );
+        map.put( "dubbo.registry.address", "zookeeper://localhost:2181" );
         map.put( "dubbo.protocol.name", "dubbo" );
         map.put( "dubbo.protocol.port", "20880" );
 

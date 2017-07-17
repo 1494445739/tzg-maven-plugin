@@ -1,8 +1,10 @@
 #set( $pkg = "com.tzg.web.project.dubbo.consumer" )
 #set( $pkg = $pkg.replaceAll( "project", $project.toLowerCase() ) )
+#set( $service = "com.tzg.web.project.dubbo.provider.FooService" )
+#set( $service = $service.replaceAll( "project", $project.toLowerCase() ) )
 package $pkg;
 
-import com.tzg.web.foo.dubbo.provider.FooService;
+import $service;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Consumer {
