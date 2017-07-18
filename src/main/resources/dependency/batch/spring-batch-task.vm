@@ -9,11 +9,13 @@
 
     <task:scheduler id="scheduler" pool-size="10" />
 
+    <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="1024" />
+
     <!--task:scheduled-tasks scheduler="scheduler">
         <task:scheduled ref="fooJobLauncher" method="execute" cron="0/1 * * * * ?"/>
     </task:scheduled-tasks>
 
-    <bean id="fooJobLauncher" class="com.tzg.foo.job.BatchJobLauncher">
+    <bean id="fooJobLauncher" class="com.tzg.component.batch.BatchJobLauncher">
         <property name="job" ref="fooJob" />
     </bean-->
 
