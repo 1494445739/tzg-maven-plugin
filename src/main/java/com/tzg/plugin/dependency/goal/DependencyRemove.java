@@ -1,9 +1,6 @@
 package com.tzg.plugin.dependency.goal;
 
-import com.tzg.plugin.dependency.support.DependencySupport;
-import com.tzg.plugin.dependency.support.DubboSupport;
-import com.tzg.plugin.dependency.support.MongoDBSupport;
-import com.tzg.plugin.dependency.support.RedisSupport;
+import com.tzg.plugin.dependency.support.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -66,6 +63,10 @@ public class DependencyRemove extends AbstractMojo {
                     break;
                 case "8":
                     component = "component-logback-dynamic-config";
+                    break;
+                case "9":
+                    component = "component-batch";
+                    BatchSupport.removeXml();
                     break;
             }
 

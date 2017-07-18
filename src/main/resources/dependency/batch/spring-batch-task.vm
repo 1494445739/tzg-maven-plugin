@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <task:scheduler id="scheduler" pool-size="10" />
+
+    <!--task:scheduled-tasks scheduler="scheduler">
+        <task:scheduled ref="fooJobLauncher" method="execute" cron="0/1 * * * * ?"/>
+    </task:scheduled-tasks>
+
+    <bean id="fooJobLauncher" class="com.tzg.foo.job.BatchJobLauncher">
+        <property name="job" ref="fooJob" />
+    </bean-->
+
+    <import resource="classpath*:/spring/job/job-*.xml" />
+
+</beans>
