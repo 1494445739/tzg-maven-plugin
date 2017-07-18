@@ -70,6 +70,10 @@ public class DependencyGen extends AbstractMojo {
                 case "8":
                     component = "component-logback-dynamic-config";
                     break;
+                case "9":
+                    component = "component-batch";
+                    BatchSupport.genBatchConfig();
+                    break;
 
             }
 

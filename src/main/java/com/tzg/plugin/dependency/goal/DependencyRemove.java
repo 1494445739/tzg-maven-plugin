@@ -69,6 +69,10 @@ public class DependencyRemove extends AbstractMojo {
                 case "8":
                     component = "component-logback-dynamic-config";
                     break;
+                case "9":
+                    component = "component-batch";
+                    BatchSupport.removeXml();
+                    break;
             }
 
             // 读取xml，根据输入的component进行查找，如果找到，则删除相关的组件，并写入pom.xml文件
