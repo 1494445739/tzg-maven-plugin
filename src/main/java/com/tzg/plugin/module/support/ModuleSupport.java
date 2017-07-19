@@ -36,7 +36,14 @@ public final class ModuleSupport {
 
         if ( project.lastIndexOf( "-" ) > 0 ) {
             int startPos = project.indexOf( "-" ) + 1;
-            int endPos   = startPos + project.substring( startPos ).indexOf( "-" );
+
+            int endPos = project.substring( startPos ).indexOf( "-" );
+            if ( endPos != -1 ) {
+                endPos = startPos + endPos;
+            } else {
+                endPos = project.length();
+            }
+
             project = project.substring( startPos, endPos );
         }
 
